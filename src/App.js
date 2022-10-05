@@ -2,6 +2,19 @@ import React from 'react';
 import Card from './components/Card';
 import Form from './components/Form';
 
+const initialState = {
+  cardName: '',
+  cardDescription: '',
+  cardAttr1: '0',
+  cardAttr2: '0',
+  cardAttr3: '0',
+  cardImage: '',
+  cardRare: 'Normal',
+  cardTrunfo: false,
+  isSaveButtonDisabled: true,
+  cardsSaved: [],
+};
+
 class App extends React.Component {
   state = {
     cardName: '',
@@ -10,9 +23,10 @@ class App extends React.Component {
     cardAttr2: '',
     cardAttr3: '',
     cardImage: '',
-    cardRare: '',
+    cardRare: 'Normal',
     cardTrunfo: false,
     isSaveButtonDisabled: true,
+    savedCards: [],
   };
 
   onInputChange = (event) => {
@@ -20,12 +34,41 @@ class App extends React.Component {
     const value = type === 'checkbox' ? checked : event.target.value;
     this.setState({
       [name]: value,
-    }, () => this.validadeForm());
+    }, () => this.validateForm());
   };
 
-  onSaveButtonClick = () => {};
+  onSaveButtonClick = (event) => {
+    event.preventDefault();
+    const {
+      cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardImage,
+      cardRare,
+      cardTrunfo,
+    } = this.state;
+    const card = {
+      cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardImage,
+      cardRare,
+      cardTrunfo,
+    };
+    this.setState((prevState) => ({
+      savedCards: [
+        ...prevState.savedCards,
+        card,
+      ],
+    }));
+    this.setState(initialState);
+  };
 
-  validadeForm = () => {
+  validateForm = () => {
     const maxStat = 90;
     const allStatMax = 210;
     const {

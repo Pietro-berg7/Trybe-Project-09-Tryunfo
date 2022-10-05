@@ -8,9 +8,9 @@ class App extends React.Component {
     this.state = {
       cardName: '',
       cardDescription: '',
-      cardAttr1: '',
-      cardAttr2: '',
-      cardAttr3: '',
+      cardAttr1: '0',
+      cardAttr2: '0',
+      cardAttr3: '0',
       cardImage: '',
       cardRare: 'Normal',
       cardTrunfo: false,
@@ -94,36 +94,60 @@ class App extends React.Component {
 
   trunfoExists = () => {
     const { savedCards } = this.state;
-    if (savedCards.some((element) => element.cardTrunfo !== true)) {
-      this.setState({ hasTrunfo: false });
-    } else {
+    if (savedCards.some((element) => element.cardTrunfo === true)) {
       this.setState({ hasTrunfo: true });
+    } else {
+      this.setState({ hasTrunfo: false });
     }
+  };
+
+  deleteCard = ({ target }) => {
+    const { savedCards } = this.state;
+    const cards = savedCards
+      .filter((element) => element.cardName !== target.id);
+    this.setState({
+      savedCards: cards,
+    }, this.trunfoExists);
   };
 
   render() {
     const { savedCards } = this.state;
     return (
       <>
-        <Form
-          { ...this.state }
-          onInputChange={ this.onInputChange }
-          onSaveButtonClick={ this.onSaveButtonClick }
-        />
-        <Card
-          { ...this.state }
-        />
-        { savedCards.map((element) => (<Card
-          key={ element.cardName }
-          cardName={ element.cardName }
-          cardDescription={ element.cardDescription }
-          cardAttr1={ element.cardAttr1 }
-          cardAttr2={ element.cardAttr2 }
-          cardAttr3={ element.cardAttr3 }
-          cardImage={ element.cardImage }
-          cardRare={ element.cardRare }
-          cardTrunfo={ element.cardTrunfo }
-        />))}
+        <div>
+          <Form
+            { ...this.state }
+            onInputChange={ this.onInputChange }
+            onSaveButtonClick={ this.onSaveButtonClick }
+          />
+          <Card
+            { ...this.state }
+          />
+        </div>
+        { savedCards.map((element) => (
+          <div key={ element.cardName }>
+            <Card
+              key={ `carta ${cardName}` }
+              cardName={ element.cardName }
+              cardDescription={ element.cardDescription }
+              cardAttr1={ element.cardAttr1 }
+              cardAttr2={ element.cardAttr2 }
+              cardAttr3={ element.cardAttr3 }
+              cardImage={ element.cardImage }
+              cardRare={ element.cardRare }
+              cardTrunfo={ element.cardTrunfo }
+            />
+            <button
+              key={ `button ${cardName}` }
+              type="button"
+              data-testid="delete-button"
+              id={ element.cardName }
+              onClick={ this.deleteCard }
+            >
+              Excluir
+            </button>
+          </div>
+        ))}
       </>
     );
   }

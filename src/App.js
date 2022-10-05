@@ -2,32 +2,23 @@ import React from 'react';
 import Card from './components/Card';
 import Form from './components/Form';
 
-const initialState = {
-  cardName: '',
-  cardDescription: '',
-  cardAttr1: '0',
-  cardAttr2: '0',
-  cardAttr3: '0',
-  cardImage: '',
-  cardRare: 'Normal',
-  cardTrunfo: false,
-  isSaveButtonDisabled: true,
-  cardsSaved: [],
-};
-
 class App extends React.Component {
-  state = {
-    cardName: '',
-    cardDescription: '',
-    cardAttr1: '',
-    cardAttr2: '',
-    cardAttr3: '',
-    cardImage: '',
-    cardRare: 'Normal',
-    cardTrunfo: false,
-    isSaveButtonDisabled: true,
-    savedCards: [],
-  };
+  constructor() {
+    super();
+    this.state = {
+      cardName: '',
+      cardDescription: '',
+      cardAttr1: '',
+      cardAttr2: '',
+      cardAttr3: '',
+      cardImage: '',
+      cardRare: 'Normal',
+      cardTrunfo: false,
+      hasTrunfo: false,
+      isSaveButtonDisabled: true,
+      savedCards: [],
+    };
+  }
 
   onInputChange = (event) => {
     const { name, type, checked } = event.target;
@@ -48,6 +39,7 @@ class App extends React.Component {
       cardImage,
       cardRare,
       cardTrunfo,
+      savedCards,
     } = this.state;
     const card = {
       cardName,
@@ -59,13 +51,21 @@ class App extends React.Component {
       cardRare,
       cardTrunfo,
     };
-    this.setState((prevState) => ({
+    this.setState({
       savedCards: [
-        ...prevState.savedCards,
+        ...savedCards,
         card,
       ],
-    }));
-    this.setState(initialState);
+      cardName: '',
+      cardDescription: '',
+      cardAttr1: '0',
+      cardAttr2: '0',
+      cardAttr3: '0',
+      cardImage: '',
+      cardRare: 'Normal',
+      cardTrunfo: false,
+      isSaveButtonDisabled: true,
+    }, () => this.trunfoExists());
   };
 
   validateForm = () => {
@@ -90,6 +90,15 @@ class App extends React.Component {
     ) {
       this.setState({ isSaveButtonDisabled: false });
     } else this.setState({ isSaveButtonDisabled: true });
+  };
+
+  trunfoExists = () => {
+    const { savedCards } = this.state;
+    if (savedCards.some((element) => element.cardTrunfo !== true)) {
+      this.setState({ hasTrunfo: false });
+    } else {
+      this.setState({ hasTrunfo: true });
+    }
   };
 
   render() {

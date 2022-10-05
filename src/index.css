@@ -178,8 +178,8 @@ select {
 /* alerts */
 .alert {
   padding: 0.375rem 0.75rem;
-  margin-bottom: 1rem;
   border-color: transparent;
+  margin-bottom: 1rem;
   border-radius: var(--borderRadius);
 }
 

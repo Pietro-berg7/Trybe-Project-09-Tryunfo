@@ -1,3 +1,4 @@
+// import { element } from 'prop-types';
 import React from 'react';
 import Card from './components/Card';
 import Form from './components/Form';
@@ -18,6 +19,7 @@ class App extends React.Component {
       isSaveButtonDisabled: true,
       savedCards: [],
       filteredCards: [],
+      elementDisabled: false,
     };
   }
 
@@ -141,23 +143,25 @@ class App extends React.Component {
     }
   };
 
-  // handleSearchTrunfo = ({ target }) => {
-  //   const { savedCards } = this.state;
-  //   const filter = savedCards
-  //     .filter((card) => card.cardTrunfo === true);
-  //   if (target.checked === false) {
-  //     this.setState({
-  //       filteredCards: savedCards,
-  //     });
-  //   } else {
-  //     this.setState({
-  //       filteredCards: filter,
-  //     });
-  //   }
-  // };
+  handleSearchTrunfo = ({ target }) => {
+    const { savedCards } = this.state;
+    const filter = savedCards
+      .filter((card) => card.cardTrunfo === target.checked);
+    if (target.checked === false) {
+      this.setState({
+        elementDisabled: false,
+        filteredCards: savedCards,
+      });
+    } else {
+      this.setState({
+        elementDisabled: true,
+        filteredCards: filter,
+      });
+    }
+  };
 
   render() {
-    const { filteredCards } = this.state;
+    const { filteredCards, elementDisabled } = this.state;
     return (
       <>
         <div>
@@ -178,6 +182,7 @@ class App extends React.Component {
               type="text"
               id="searchName"
               onChange={ this.handleSearchName }
+              disabled={ elementDisabled }
             />
           </label>
         </section>
@@ -186,13 +191,14 @@ class App extends React.Component {
           name="searchRarity"
           id="searchRarity"
           onClick={ this.handleSearchRarity }
+          disabled={ elementDisabled }
         >
           <option value="todas">Todas</option>
           <option value="normal">Normal</option>
           <option value="raro">Raro</option>
           <option value="muito raro">Muito Raro</option>
         </select>
-        {/* <label htmlFor="superTrunfo">
+        <label htmlFor="superTrunfo">
           Super Trunfo
           <input
             data-testid="trunfo-filter"
@@ -200,7 +206,7 @@ class App extends React.Component {
             id="superTrunfo"
             onClick={ this.handleSearchTrunfo }
           />
-        </label> */}
+        </label>
         { filteredCards
           .map((element) => (
             <div key={ element.cardName }>

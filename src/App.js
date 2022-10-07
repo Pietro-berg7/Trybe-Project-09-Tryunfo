@@ -57,6 +57,10 @@ class App extends React.Component {
         ...savedCards,
         card,
       ],
+      filteredCards: [
+        ...savedCards,
+        card,
+      ],
       cardName: '',
       cardDescription: '',
       cardAttr1: '0',
@@ -108,6 +112,7 @@ class App extends React.Component {
       .filter((element) => element.cardName !== target.id);
     this.setState({
       savedCards: cards,
+      filteredCards: cards,
     }, this.trunfoExists);
   };
 
@@ -135,6 +140,21 @@ class App extends React.Component {
       });
     }
   };
+
+  // handleSearchTrunfo = ({ target }) => {
+  //   const { savedCards } = this.state;
+  //   const filter = savedCards
+  //     .filter((card) => card.cardTrunfo === true);
+  //   if (target.checked === false) {
+  //     this.setState({
+  //       filteredCards: savedCards,
+  //     });
+  //   } else {
+  //     this.setState({
+  //       filteredCards: filter,
+  //     });
+  //   }
+  // };
 
   render() {
     const { filteredCards } = this.state;
@@ -172,6 +192,15 @@ class App extends React.Component {
           <option value="raro">Raro</option>
           <option value="muito raro">Muito Raro</option>
         </select>
+        {/* <label htmlFor="superTrunfo">
+          Super Trunfo
+          <input
+            data-testid="trunfo-filter"
+            type="checkbox"
+            id="superTrunfo"
+            onClick={ this.handleSearchTrunfo }
+          />
+        </label> */}
         { filteredCards
           .map((element) => (
             <div key={ element.cardName }>

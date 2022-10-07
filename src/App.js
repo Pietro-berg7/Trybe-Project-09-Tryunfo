@@ -12,12 +12,13 @@ class App extends React.Component {
       cardAttr2: '0',
       cardAttr3: '0',
       cardImage: '',
-      cardRare: 'Normal',
+      cardRare: 'normal',
       cardTrunfo: false,
       hasTrunfo: false,
       isSaveButtonDisabled: true,
       savedCards: [],
-      searchValue: '',
+      filteredCards: [],
+      searchRarity: 'todas',
     };
   }
 
@@ -111,14 +112,20 @@ class App extends React.Component {
     }, this.trunfoExists);
   };
 
-  handleSearch = (event) => {
-    this.setState(
-      { searchValue: event.target.value },
-    );
+  handleSearchName = ({ target }) => {
+    const { savedCards } = this.state;
+    const filter = savedCards
+      .filter((card) => (card.cardName)
+        .includes(target.value));
+    this.setState({
+      filteredCards: filter,
+    });
   };
 
+  // handleSearchRarity = () => {};
+
   render() {
-    const { savedCards, searchValue } = this.state;
+    const { searchRarity, filteredCards } = this.state;
     return (
       <>
         <div>
@@ -137,16 +144,24 @@ class App extends React.Component {
             <input
               data-testid="name-filter"
               type="text"
-              value={ searchValue }
-              name="searchValue"
-              id="search"
-              onChange={ this.handleSearch }
+              id="searchName"
+              onChange={ this.handleSearchName }
             />
           </label>
         </section>
-        { savedCards
-          .filter((card) => card.cardName.toLowerCase()
-            .includes(searchValue.toLowerCase()))
+        <select
+          data-testid="rare-filter"
+          name="searchRarity"
+          id="searchRarity"
+          value={ searchRarity }
+          onClick={ this.handleSearchRarity }
+        >
+          <option value="todas">Todas</option>
+          <option value="normal">Normal</option>
+          <option value="raro">Raro</option>
+          <option value="muito raro">Muito Raro</option>
+        </select>
+        { filteredCards
           .map((element) => (
             <div key={ element.cardName }>
               <Card

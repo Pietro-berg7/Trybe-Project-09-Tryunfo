@@ -18,7 +18,6 @@ class App extends React.Component {
       isSaveButtonDisabled: true,
       savedCards: [],
       filteredCards: [],
-      searchRarity: 'todas',
     };
   }
 
@@ -122,10 +121,23 @@ class App extends React.Component {
     });
   };
 
-  // handleSearchRarity = () => {};
+  handleSearchRarity = ({ target }) => {
+    const { savedCards } = this.state;
+    const filter = savedCards
+      .filter((card) => card.cardRare === target.value);
+    if (target.value === 'todas') {
+      this.setState({
+        filteredCards: savedCards,
+      });
+    } else {
+      this.setState({
+        filteredCards: filter,
+      });
+    }
+  };
 
   render() {
-    const { searchRarity, filteredCards } = this.state;
+    const { filteredCards } = this.state;
     return (
       <>
         <div>
@@ -153,7 +165,6 @@ class App extends React.Component {
           data-testid="rare-filter"
           name="searchRarity"
           id="searchRarity"
-          value={ searchRarity }
           onClick={ this.handleSearchRarity }
         >
           <option value="todas">Todas</option>

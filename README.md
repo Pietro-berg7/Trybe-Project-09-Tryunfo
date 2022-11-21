@@ -14,6 +14,8 @@
 
 <summary><strong>:memo: Habilidades</strong></summary>
 
+  Neste projeto foi avaliado se eu era capaz de usar as seguintes habilidades:
+
   * Ler o estado de um componente e usá-lo para alterar o que exibimos no browser
 
   * Inicializar um componente, dando a ele um estado pré-definido
